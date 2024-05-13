@@ -1,0 +1,48 @@
+{% extends "default.html.twig" %}
+{% block body %}
+    <h1>Hello!</h1>
+    <p>This is an example page for a custom AntCMS plugin!</p>
+
+    <h2>Hooks</h2>
+    <p>The following hooks were registered in AntCMS</p>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Times Fired</th>
+                <th>Registered Callbacks</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for hook in hooks %}
+            <tr>
+                <td>{{ hook.name }}</td>
+                <td>{{ hook.description }}</td>
+                <td>{{ hook.timesFired }}</td>
+                <td>{{ hook.registeredCallbacks }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <h2>Example API Endpoints</h2>
+    <ul>
+        <li>
+            <a href="{{ 'api/v0/public/example/foo'|absUrl }}" target="_blank">public/example/foo</a>
+        </li>
+        <li>
+            <a href="{{ 'api/v0/public/example/bar'|absUrl }}" target="_blank">public/example/bar</a>
+        </li>
+        <li>
+            <a href="{{ 'api/v0/public/example/dumpApiParams'|absUrl }}" target="_blank">public/example/dumpApiParams</a>
+        </li>
+        <li>
+            <a href="{{ 'api/v0/public/example/dumpApiParams/some/url/params'|absUrl }}" target="_blank">public/example/dumpApiParams/some/url/params</a>
+        </li>
+        <li>
+            <a href="{{ 'api/v0/public/example/dumpApiParams/urlParam?plus=get'|absUrl }}" target="_blank">public/example/dumpApiParams/urlParam?plus=get</a>
+        </li>
+    </ul>
+{% endblock %}
