@@ -12,6 +12,7 @@
                 <th>Description</th>
                 <th>Times Fired</th>
                 <th>Registered Callbacks</th>
+                <th>Default Preventable</th>
             </tr>
         </thead>
 
@@ -22,6 +23,7 @@
                 <td>{{ hook.description }}</td>
                 <td>{{ hook.timesFired }}</td>
                 <td>{{ hook.registeredCallbacks }}</td>
+                <td>{% if hook.isDefaultPreventable %} Yes! {% else %} No {% endif %}</td>
             </tr>
             {% endfor %}
         </tbody>
