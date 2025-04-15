@@ -3,6 +3,7 @@
 namespace AntCMS\Plugins\Example;
 
 use AntCMS\AbstractPlugin;
+use AntCMS\Event;
 use AntCMS\HookController;
 use AntCMS\Twig;
 use Flight;
@@ -12,7 +13,7 @@ class Controller extends AbstractPlugin
     public function __construct()
     {
         // Register a hook and sets the description for it
-        HookController::registerHook('myCoolHook', 'The helpful description of my hook');
+        HookController::registerHook('myCoolHook', 'The helpful description of my hook', true);
 
         /**
          * Register a callback for the hook you just created
@@ -46,8 +47,30 @@ class Controller extends AbstractPlugin
         //$this->addAllow('/hi');
     }
 
-    public function hookCallback(array $data): void
+    public function hookCallback(Event $event): Event
     {
-        error_log(print_r($data, true));
+        if ($event->isDefaultPrevented()) {
+            return $event;
+        }
+
+        // The AntCMS\Event object holds important info about a hook that has been fired.
+        $data = $event->getParameters();
+        $firedAt = $event->firedAt(); // DateTime object
+        $name = $event->getHookName();
+        $readCount = $event->getReadCount(); // The total number of times the parameters for a hook were read.
+        $updateCount = $event->getUpdateCount(); // The total number of times the parameters for a hook were updated.
+
+        if ($event->isDone()) {
+            $event->timeElapsed(); // Time elapsed in nano seconds
+        }
+
+        // We don't actually want to blindly do this due to potential breakage, but some hooks can have their default behavior prevented.
+        if ($event->isDefaultPreventable()) {
+            //$event->preventDefault();
+        }
+
+        // We can update the parameters of a hook, in which case we **have** to return the Event object. Otherwise, no return is needed.
+        $event->setParameters(['some', 'values']);
+        return $event;
     }
 }
